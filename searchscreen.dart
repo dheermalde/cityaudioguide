@@ -1,7 +1,10 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:uuid/uuid.dart';
+
+import 'QueryAutocompletePredictions.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -11,15 +14,30 @@ class SearchScreen extends StatefulWidget {
 class SearchScreenState extends State<SearchScreen> {
   bool _searching;
   String _searchTerm;
+  String _APIKEY = "AIzaSyCLHmHIYCCIxF6l9YTzmzbgAe8vqlSK4Pw";
+  var _parsedJson;
   var _placesPredictions;
+  Future<QueryAutocompletePredictions> _futureQueryAutocompletePredictions;
+  var _uuid = Uuid();
+  String _sessionToken;
 
   @override
   void initState() {
     super.initState();
     _searching = false;
+    _sessionToken = _uuid.v1();
+    print('$_sessionToken');
   }
 
-  void _textFieldChange(String value) {
+  Future<QueryAutocompletePredictions> _getPredictions() async{
+    String _URL = "https://maps.googleapis.com/maps/api/place/queryautocomplete/json?key=$_APIKEY&input=$_searchTerm&sessiontoken=$_sessionToken";
+    final _predictionsJSON = await http.get(_URL);
+    _parsedJson = jsonDecode(_predictionsJSON.body);
+    _placesPredictions = QueryAutocompletePredictions.fromJson(_parsedJson);
+    return _placesPredictions;
+  }
+
+  Future<void> _textFieldChange(String value) async{
     if (value != '') {
       setState(() {
         _searching = true;
@@ -95,18 +113,33 @@ class SearchScreenState extends State<SearchScreen> {
     ];
     if (_searching) {
       builder.add(
-        new Flexible(
-          child: new ListView.separated(
-            itemCount: 1,
-            itemBuilder: (BuildContext context, int index){
-              return new Container(
-                child: new Text('$_searchTerm'),
+        new FutureBuilder(
+          future: _futureQueryAutocompletePredictions = _getPredictions(),
+          builder: (BuildContext context, AsyncSnapshot<QueryAutocompletePredictions> snapshot){
+            Widget recommendedList;
+            if (snapshot.hasData) {
+               recommendedList = ListView.builder(
+                itemCount: snapshot.data.predictions == null ? 0 : snapshot.data.predictions.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return new ListTile(
+                    title: new Text('${snapshot.data.predictions[index].description}'),
+                  );
+                },
+               );
+            } else {
+              recommendedList = ListView.builder(
+                itemCount: 1,
+                itemBuilder: (BuildContext context, int index) {
+                  return new ListTile(
+                    title: new Text('$_searchTerm'),
+                  );
+                },
               );
-            },
-            separatorBuilder: (BuildContext context, int index){
-              return new Divider();
-            },
-          ),
+            }
+            return Flexible(
+              child: recommendedList,
+            );
+          },
         )
       );
     }
