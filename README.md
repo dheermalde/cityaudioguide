@@ -1,5 +1,12 @@
 # cityaudioguide
 
+## Dependencies 
+```
+cupertino_icons: ^0.1.2
+google_maps_flutter: ^0.5.22+3
+uuid: ^2.0.4
+http: ^0.12.0+4
+```
 ## The Code
 main.dart contains routes to the different parts of the app.
 
