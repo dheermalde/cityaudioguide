@@ -20,6 +20,8 @@ class HomeScreenState extends State<HomeScreen> {
               Text('Pages to visit'),
               _MapScreenButton(context),
               _SearchScreenButton(context),
+              _testScreenButton(context),
+              _NearbyScreenButton(context),
             ],
           ),
         ),
@@ -37,10 +39,29 @@ class HomeScreenState extends State<HomeScreen> {
   Widget _SearchScreenButton(BuildContext context){
     return RaisedButton(
       child: Text(
-        'Search Widget (WIP)',
-        style: TextStyle(color: Colors.red),
+        'Search Widget',
       ),
       onPressed: () {Navigator.pushNamed(context, '/SearchScreen');},
+    );
+  }
+
+  Widget _testScreenButton(BuildContext context){
+    return RaisedButton(
+      child: Text(
+        'Test Widget',
+        style: TextStyle(color: Colors.red),
+      ),
+      onPressed: () {Navigator.pushNamed(context, '/TestScreen');},
+    );
+  }
+
+  Widget _NearbyScreenButton(BuildContext context){
+    return RaisedButton(
+      child: Text(
+        'Nearby Widget',
+        style: TextStyle(color: Colors.red),
+      ),
+      onPressed: () {Navigator.pushNamed(context, '/NearbyScreen');},
     );
   }
 }
