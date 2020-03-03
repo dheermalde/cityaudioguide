@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'homescreen.dart';
-import 'mapscreen.dart';
-import 'searchscreen.dart';
-import 'test.dart';
-import 'nearbyscreen.dart';
+import 'homepage.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,15 +8,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      initialRoute: '/',
-      routes: {
-        '/':(context) => HomeScreen(),
-        '/MapScreen':(context) => MapScreen(),
-        '/SearchScreen':(context) => SearchScreen(),
-        '/TestScreen':(context) => TestScreen(),
-        '/NearbyScreen':(context) => NearbyScreen(),
-      },
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter GoogleMaps Demo',
+      theme: ThemeData(
+        primaryColor: Color(0xff6200ee),
+      ),
+      home: HomePage(),
     );
   }
 }
