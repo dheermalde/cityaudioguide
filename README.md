@@ -1,39 +1,7 @@
-# cityaudioguide
+# audio_map_merged
 
-## Dependencies 
-```
-cupertino_icons: ^0.1.2
-google_maps_flutter: ^0.5.22+3
-uuid: ^2.0.4
-http: ^0.12.0+4
-```
-## The Code
-main.dart contains routes to the different parts of the app.
+Merged map
 
-```
-'/':(context) => HomeScreen(),
-'/MapScreen':(context) => MapScreen(),
-'/SearchScreen':(context) => SearchScreen(),
-```
+## Application
 
-The initial route is '/' aka the HomeScreen (for testing purposes only).
-
-```
-initialRoute: '/',
-```
-
-HomeScreen contains buttons that will lead to the different parts of the application.
-
-To reach another "page" using buttons use the onpressed() of the button to navigate to the other routes,
-
-```
-onPressed: () {Navigator.pushNamed(context, '/SearchScreen');}
-```
-
-This will push the new route page over the current page in a stack.
-
-To remove the top most page from the stack (return to the previous page) do,
-
-```
-() {Navigator.pop(context);}
-```
+Add the API key at android\\app\\src\\main\\AndroidManifest.xml and lib\\SearchBarLogic.dart
